@@ -71,12 +71,12 @@ const run = async () => {
         //     }
         //     next();
         // };
-        console.log('collectionH ',categoryCollection);
+     
         
 
         // GET BLOGS
         app.get('/blogs', async (req, res) => {
-            console.log('hello');
+            
             
             const filter = {};
             const result = await blogsCollection.find(filter).toArray();
@@ -84,6 +84,30 @@ const run = async () => {
             
             res.send(result);
         });
+        // GET Category
+        app.get('/blog-category', async (req, res) => {
+         
+            
+            const filter = {};
+            const result = await categoryCollection.find(filter).toArray();
+            console.log(result);
+            
+            res.send(result);
+        });
+
+        // Get Categorized Blogs
+        app.get('/category-blogs/:id', async (req, res) => {
+            console.log('hello');
+            const {id }= req.params;
+            
+            
+            const filter = {categoryId:id};
+            const result = await blogsCollection.find(filter).toArray();
+            console.log(result);
+            
+            res.send(result);
+        });
+
 
 
     } finally {
