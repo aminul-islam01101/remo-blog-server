@@ -175,31 +175,81 @@ const run = async () => {
         });
         // adding like array in collection
 
-        app.put('/like', async (req, res) => {
+        app.post('/like', async (req, res) => {
             const { id, email } = req.query;
 
-            const filter = { _id: ObjectId(id) };
-
-            const blog = await blogsCollection.findOne(filter);
-
-            const likeArray = blog?.interaction;
-
-            const userInfo = likeArray?.filter((user) => user.email === email);
-            if (userInfo) {
-                res.send('already liked');
-            } else {
+           
                 const obj = { email, like: true };
 
-                const updatedBlog = await blogsCollection.update(
+                const updatedBlog = await blogsCollection.updateOne(
                     { _id: ObjectId(id) },
                     { $addToSet: { like: obj } }
                 );
                 res.send(updatedBlog);
-            }
+          
         });
 
-        //  adding comments array in collection
+        // get like status
 
+        app.get('/like/:id', async (req, res) => {
+          
+            const { id } = req.params;
+
+            const filter = { _id: ObjectId(id) };
+            const result = await blogsCollection.findOne(filter);
+            console.log(result);
+
+            res.send(result);
+        });
+        // app.get('/likestatus', async (req, res) => {
+          
+        //     const { id, email } = req.query;
+
+        //     const filter = { _id: ObjectId(id) };
+        //     const result = await blogsCollection.findOne(filter);
+        //     console.log(result.like);
+        //     console.log(email);
+            
+            
+        //   if (result?.like) {
+        //     const status = result?.like.filter((liked) => liked.email===email)
+        //    console.log(status);
+           
+            
+        //     if (status) {
+        //         res.send(true)
+               
+        //     }
+        //     else {
+        //         res.send(false);
+        //     }
+        //     return
+        //   }
+
+        //     res.send(false);
+        // });
+
+
+
+
+
+
+
+        //  adding comments array in collection
+        app.post('/comment/:id', async (req, res) => {
+            const { id } = req.params;
+        
+            const filter = { _id: ObjectId(id) };
+            const result = await blogsCollection.findOne(filter);
+        
+            const comments = req.body;
+        
+            const updatedBlog = await blogsCollection.update(
+                { _id: ObjectId(id) },
+                { $addToSet: { comments} }
+            );
+            res.send(updatedBlog);
+        });
      
 
         // get comments
@@ -213,7 +263,7 @@ const run = async () => {
             const filter = { _id: ObjectId(id) };
             const result = await blogsCollection.findOne(filter);
 
-            console.log(result?.comments);
+    
 
             res.send(result?.comments);
         });
@@ -228,20 +278,7 @@ app.delete('/blog/:id', async (req, res) => {
 });
 
 
-app.post('/comment/:id', async (req, res) => {
-    const { id } = req.params;
 
-    const filter = { _id: ObjectId(id) };
-    const result = await blogsCollection.findOne(filter);
-
-    const comments = req.body;
-
-    const updatedBlog = await blogsCollection.update(
-        { _id: ObjectId(id) },
-        { $addToSet: { comments} }
-    );
-    res.send(updatedBlog);
-});
 
 
 
