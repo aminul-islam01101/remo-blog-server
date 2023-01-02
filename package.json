@@ -1,5 +1,5 @@
 {
-    "name": "comix-server",
+    "name": "remo-blog-server",
     "version": "1.0.0",
     "main": "index.js",
     "type": "module",

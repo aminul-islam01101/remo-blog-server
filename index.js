@@ -120,6 +120,12 @@ const run = async () => {
             const user = await usersCollection.findOne(query);
             res.send({ message: 'success', user });
         });
+        // get all user
+        app.get('/users', async (req, res) => {
+            const query = {};
+            const user = await usersCollection.find(query).toArray();
+            res.send(user);
+        });
 
         // add product page: POST a book
         app.post('/add-blog', async (req, res) => {
@@ -178,21 +184,18 @@ const run = async () => {
         app.post('/like', async (req, res) => {
             const { id, email } = req.query;
 
-           
-                const obj = { email, like: true };
+            const obj = { email, like: true };
 
-                const updatedBlog = await blogsCollection.updateOne(
-                    { _id: ObjectId(id) },
-                    { $addToSet: { like: obj } }
-                );
-                res.send(updatedBlog);
-          
+            const updatedBlog = await blogsCollection.updateOne(
+                { _id: ObjectId(id) },
+                { $addToSet: { like: obj } }
+            );
+            res.send(updatedBlog);
         });
 
         // get like status
 
         app.get('/like/:id', async (req, res) => {
-          
             const { id } = req.params;
 
             const filter = { _id: ObjectId(id) };
@@ -202,23 +205,21 @@ const run = async () => {
             res.send(result);
         });
         // app.get('/likestatus', async (req, res) => {
-          
+
         //     const { id, email } = req.query;
 
         //     const filter = { _id: ObjectId(id) };
         //     const result = await blogsCollection.findOne(filter);
         //     console.log(result.like);
         //     console.log(email);
-            
-            
+
         //   if (result?.like) {
         //     const status = result?.like.filter((liked) => liked.email===email)
         //    console.log(status);
-           
-            
+
         //     if (status) {
         //         res.send(true)
-               
+
         //     }
         //     else {
         //         res.send(false);
@@ -229,59 +230,79 @@ const run = async () => {
         //     res.send(false);
         // });
 
-
-
-
-
-
-
         //  adding comments array in collection
         app.post('/comment/:id', async (req, res) => {
             const { id } = req.params;
-        
+
             const filter = { _id: ObjectId(id) };
             const result = await blogsCollection.findOne(filter);
-        
+
             const comments = req.body;
-        
+
             const updatedBlog = await blogsCollection.update(
                 { _id: ObjectId(id) },
-                { $addToSet: { comments} }
+                { $addToSet: { comments } }
             );
             res.send(updatedBlog);
         });
-     
 
         // get comments
 
         // Get Categorized Blogs
         app.get('/comments/:id', async (req, res) => {
             const { id } = req.params;
-            console.log('heell');
-            
 
             const filter = { _id: ObjectId(id) };
             const result = await blogsCollection.findOne(filter);
 
-    
-
-            res.send(result?.comments);
+            res.send(result?.comments.sort((a, b) => new Date(b.time) - new Date(a.time)));
         });
 
-// admin route functionality
+        // admin route functionality
 
-app.delete('/blog/:id', async (req, res) => {
-    const { id } = req.params;
-    const filter = { _id: ObjectId(id) };
-    const result = await blogsCollection.deleteOne(filter);
-    res.send(result);
-});
+        app.delete('/blog/:id', async (req, res) => {
+            const { id } = req.params;
+            const filter = { _id: ObjectId(id) };
+            const result = await blogsCollection.deleteOne(filter);
+            res.send(result);
+        });
 
+        // make admin
+        app.put('/users/admin/:id', async (req, res) => {
+            const { id } = req.params;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: {
+                    role: 'admin',
+                },
+            };
+            const result = await usersCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        });
+        // Delete User
+        app.delete('/user/:id', async (req, res) => {
+            const { id } = req.params;
+            const filter = { _id: ObjectId(id) };
+            const result = await usersCollection.deleteOne(filter);
+            res.send(result);
+        });
 
+        // update a blog
+        app.put('/update/:id', async (req, res) => {
+            const { id } = req.params;
+            const blogInfo = req.body;
 
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: blogInfo,
+            };
 
+            const result = await blogsCollection.updateOne(filter, updatedDoc, options);
 
-
+            res.send(result);
+        });
     } finally {
     }
 };

@@ -1,26 +1,24 @@
 [
     {
-        "blogName": "Long walk to freedom",
-        "authorName": "Nelson Mendella",
-        "categoryId": "3",
-        "description": "The autobiography Long Walk to Freedom, which chronicles his early life and years in prison, was published in 1994. An unfinished draft of his second volume of memoirs was completed by Mandla Langa and released posthumously as Dare Not Linger: The Presidential Years (2017).",
-        "image": "https://i.ibb.co/z2YJyWt/long-walk-to-freedom.jpg",
-        "postingTime": "2022-11-25T05:57:35.398Z"
-    },
-    {
-        "blogName": "Long walk",
-        "authorName": "Nelson",
-        "categoryId": "2",
-        "description": "The autobiography Long Walk to Freedom, which chronicles his early life and years in prison, was published in 1994. An unfinished draft of his second volume of memoirs was completed by Mandla Langa and released posthumously as Dare Not Linger: The Presidential Years (2017).",
-        "image": "https://i.ibb.co/z2YJyWt/long-walk-to-freedom.jpg",
-        "postingTime": "2022-11-25T05:57:35.398Z"
-    },
-    {
-        "blogName": "to freedom",
-        "authorName": "Mendella",
+       
         "categoryId": "1",
-        "description": "The autobiography Long Walk to Freedom, which chronicles his early life and years in prison, was published in 1994. An unfinished draft of his second volume of memoirs was completed by Mandla Langa and released posthumously as Dare Not Linger: The Presidential Years (2017).",
-        "image": "https://i.ibb.co/z2YJyWt/long-walk-to-freedom.jpg",
-        "postingTime": "2022-11-25T05:57:35.398Z"
+        "categoryName": "Remote Job"
+    },
+    {
+       
+        "categoryId": "2",
+        "categoryName": "Web Development"
+    },
+    {
+       
+        "categoryId": "3",
+        "categoryName": "Technology"
+    },
+    {
+       
+        "categoryId": "4",
+        "categoryName": "Skill"
     }
+ 
+  
 ]
